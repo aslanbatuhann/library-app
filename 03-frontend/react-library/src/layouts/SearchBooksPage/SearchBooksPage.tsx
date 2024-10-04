@@ -19,7 +19,7 @@ export const SearchBooksPage = () => {
     const fetchBooks = async () => {
       const baseUrl: string = "http://localhost:8080/api/books";
 
-      let url: string = '';
+      let url: string = "";
 
       if (searchUrl === "") {
         url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
@@ -78,12 +78,14 @@ export const SearchBooksPage = () => {
   }
 
   const searchHandleChange = () => {
-      if (search === '') {
-          setSearchUrl('');
-      } else {
-        setSearchUrl(`/search/findByTitleContaining?title=${search}&page=0&size=${booksPerPage}`);
-      }
-  }
+    if (search === "") {
+      setSearchUrl("");
+    } else {
+      setSearchUrl(
+        `/search/findByTitleContaining?title=${search}&page=0&size=${booksPerPage}`
+      );
+    }
+  };
 
   const indexOfLastBook: number = currentPage * booksPerPage;
   const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
@@ -106,11 +108,13 @@ export const SearchBooksPage = () => {
                   className="form-control me-2"
                   placeholder="Search"
                   aria-labelledby="Search"
-                  onChange={e => setSearch(e.target.value)}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <button className="btn btn-outline-success" 
-                    onClick={() => searchHandleChange()}>
-                Search
+                <button
+                  className="btn btn-outline-success"
+                  onClick={() => searchHandleChange()}
+                >
+                  Search
                 </button>
               </div>
             </div>
@@ -158,15 +162,30 @@ export const SearchBooksPage = () => {
               </div>
             </div>
           </div>
-          <div className="mt-3">
-            <h5>Number of results: ({totalAmountOfBooks})</h5>
-          </div>
-          <p>
-            {indexOfFirstBook + 1} to {lastItem} {totalAmountOfBooks} items:
-          </p>
-          {books.map((book) => (
-            <SearchBook book={book} key={book.id} />
-          ))}
+          {totalAmountOfBooks > 0 ? (
+            <>
+              <div className="mt-3">
+                <h5>Number of results: ({totalAmountOfBooks})</h5>
+              </div>
+              <p>
+                {indexOfFirstBook + 1} to {lastItem} {totalAmountOfBooks} items:
+              </p>
+              {books.map((book) => (
+                <SearchBook book={book} key={book.id} />
+              ))}
+            </>
+          ) : (
+            <div className="m-5">
+              <h3>Cant't find what you are looking for?</h3>
+              <a
+                type="button"
+                className="btn main-color btn-md px-4 me-md-2 fw-bold text-white"
+                href="#"
+              >
+                Library services
+              </a>
+            </div>
+          )}
           {totalPages > 1 && (
             <Pagination
               currentPage={currentPage}
